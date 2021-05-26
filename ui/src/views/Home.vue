@@ -3,7 +3,7 @@
   <purchase-list/>
 </template>
 <script>
-import PurchaseList from '../components/purchase-list'
+import PurchaseList from '../components/purchase/purchase-list'
 
 export default {
   name: 'Home',
