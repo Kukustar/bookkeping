@@ -1,9 +1,10 @@
 <template>
-  <h1>Home</h1>
+  <h1>Purchase list</h1>
   <purchase-list/>
 </template>
 <script>
 import PurchaseList from '../components/purchase-list'
+
 export default {
   name: 'Home',
   components: { PurchaseList },
@@ -17,7 +18,16 @@ export default {
           Authorization: `Bearer ${token}`
         }
     })
-      .then(res => res.json())
+      .then(res => {
+        const { status, statusText } = res
+        if (status === 401 && statusText === 'Unauthorized') {
+          localStorage.removeItem('access')
+          localStorage.removeItem('expireDate')
+          localStorage.removeItem('refresh')
+          this.$router.push('/login')
+        }
+        return res.json()
+      })
       .then(res => console.info(res))
   }
 }
