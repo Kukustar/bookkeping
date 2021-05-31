@@ -1,15 +1,27 @@
 <template>
   <div class="purchase-list-container container">
-    <purchase-element/>
+    <purchase-element
+      v-for="(purchase, index) in this.list"
+      :key="index"
+      :cost="purchase.cost"
+      :date="purchase.date"
+      :title="purchase.title"
+    />
   </div>
 </template>
 
 <script>
+import { inject } from 'vue'
 import PurchaseElement from './purchase-element'
 
 export default {
   name: 'purchase-list',
-  components: { PurchaseElement }
+  components: { PurchaseElement },
+  setup () {
+    return {
+      list: inject('purchase-list')
+    }
+  }
 }
 </script>
 

@@ -5,12 +5,12 @@
         icon
       </div>
       <div class="purchase-title-time">
-        <b>title</b>
-        <p><span>time</span></p>
+        <b>{{  title }}</b>
+        <p><span>{{  dateToView }}</span></p>
       </div>
       <div class="purchase-cost">
         <div class="purchase-cost-wrapper">
-          <p>cost $</p>
+          <p>{{ cost }} ₽</p>
         </div>
       </div>
     </div>
@@ -18,7 +18,28 @@
 </template>
 <script>
 export default {
-  name: 'purchase-element'
+  name: 'purchase-element',
+  props: {
+    date: {
+      type: Date,
+      default: ''
+    },
+    cost: {
+      type: Number,
+      default: 0
+    },
+    title: {
+      type: String,
+      default: ' - '
+    }
+  },
+  computed: {
+    dateToView () {
+      const date = new Date(this.date)
+
+      return date.toLocaleString()
+    }
+  }
 }
 </script>
 <style>
