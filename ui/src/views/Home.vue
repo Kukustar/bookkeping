@@ -1,5 +1,8 @@
 <template>
-  <h1>Purchase list</h1>
+  <div class="header-container">
+    <h1>Purchase list</h1>
+    <button @click="handleExitButton">exit</button>
+  </div>
   <new-purchase/>
   <purchase-list/>
   <pagination
@@ -61,6 +64,12 @@ export default {
     handleClickPrevPage () {
       this.setCurrentPage(this.currentPage - 1)
       this.loadPurchaseList(this.currentPage)
+    },
+    handleExitButton () {
+      localStorage.removeItem('refresh')
+      localStorage.removeItem('access')
+      localStorage.removeItem('expireDate')
+      this.$router.push('/login')
     }
   }
 }
@@ -71,5 +80,10 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+}
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between
 }
 </style>

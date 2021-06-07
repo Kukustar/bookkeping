@@ -8,13 +8,16 @@ export default function jwtGuard (to, from, next) {
   const accessToken = localStorage.getItem('access')
   const refreshToken = localStorage.getItem('refresh')
   const unixExpireDate = localStorage.getItem('expireDate')
+  const unixExpireRefreshDate = localStorage.getItem('expireRefreshTokenExpireDate')
+  const expireRefreshTokenDate = new Date(parseInt(unixExpireRefreshDate))
   const expireDate = new Date(parseInt(unixExpireDate))
   const nowDate = new Date()
   const dateDiff = expireDate - nowDate
+  const dateRefreshTokenDiff = expireRefreshTokenDate - nowDate
 
   if (to.name !== 'Login' && (accessToken === null || accessToken === undefined)) next({ name: 'Login' })
   if (to.name !== 'Login' && (refreshToken === null || refreshToken === undefined)) next({ name: 'Login' })
-  if (to.name !== 'Login' && dateDiff > 0) {
+  if (to.name !== 'Login' && dateDiff < 0 && dateRefreshTokenDiff > 0) {
     fetch('http://localhost:3003/api/token/refresh/', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
