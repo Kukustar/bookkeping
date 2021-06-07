@@ -21,7 +21,7 @@ export default {
   name: 'purchase-element',
   props: {
     date: {
-      type: Date,
+      type: String,
       default: ''
     },
     cost: {

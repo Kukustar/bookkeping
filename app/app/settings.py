@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-!u7aeny2fzkonkyn(m3zdk9$cx&qacyb^(buenflv_2+!&s_%k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    # '7d31e0242127.ngrok.io'
+]
 
 
 # Application definition
@@ -123,7 +125,9 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication'
-    ]
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 25
 }
 
 # Password validation

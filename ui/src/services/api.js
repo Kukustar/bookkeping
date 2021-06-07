@@ -17,7 +17,7 @@ const ApiService = {
     }
     try {
       // eslint-disable-next-line
-      const res = await fetch(`${url}?${query}`, options)
+      const res = await fetch(`${url}`, options)
       const { status, statusText } = res
       if (status === 401 && statusText === 'Unauthorized') {
         localStorage.removeItem('access')

@@ -1,9 +1,11 @@
 <template>
   <div class="new-purchase-button-container">
     <div class="new-purchase-input-container" v-if="isAddNewPurchase">
-      <div class="input-wrapper"><input placeholder="cost ₽" type="number" v-model="cost"/> </div>
+      <div class="input-wrapper"><input placeholder="cost ₽" type="number" v-model="cost"/></div>
       <div class="input-wrapper"><input placeholder="title" v-model="title"/></div>
-      <div class="add-purchase"><button @click="addNewPurchase">add</button></div>
+      <div class="add-purchase">
+        <button @click="addNewPurchase">add</button>
+      </div>
     </div>
     <div v-else>
       <button @click="isAddNewPurchase= !isAddNewPurchase">add</button>
@@ -14,6 +16,7 @@
 
 <script>
 import { inject } from 'vue'
+
 export default {
   name: 'new-purchase',
   setup () {
@@ -52,7 +55,7 @@ export default {
   margin-bottom: 20px;
 }
 
-.new-purchase-input-container{
+.new-purchase-input-container {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
