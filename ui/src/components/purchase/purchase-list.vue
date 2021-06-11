@@ -6,6 +6,8 @@
       :cost="purchase.cost"
       :date="purchase.date"
       :title="purchase.title"
+      :id="purchase.id"
+      :delete-purchase="deletePurchase"
     />
   </div>
 </template>
@@ -19,7 +21,8 @@ export default {
   components: { PurchaseElement },
   setup () {
     return {
-      list: inject('purchase-list')
+      list: inject('purchase-list'),
+      deletePurchase: inject('delete-purchase')
     }
   }
 }

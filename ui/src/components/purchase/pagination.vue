@@ -35,6 +35,7 @@ export default {
   },
   computed: {
     isCanViewNextButton () {
+      // todo move 25 to constants
       const totalPages = parseInt(String(this.count / 25))
       return this.currentPage < totalPages
     },

@@ -5,6 +5,7 @@
       <div class="input-wrapper"><input placeholder="title" v-model="title"/></div>
       <div class="add-purchase">
         <button @click="addNewPurchase">add</button>
+        <button @click="isAddNewPurchase = !isAddNewPurchase">cancel</button>
       </div>
     </div>
     <div v-else>
@@ -40,6 +41,8 @@ export default {
         date: new Date(),
         description: ''
       })
+      this.cost = ''
+      this.title = ''
     }
   }
 }
@@ -53,6 +56,19 @@ export default {
 
 .new-purchase-button-container div {
   margin-bottom: 20px;
+}
+
+.new-purchase-button-container .add-purchase   {
+  display: flex;
+  justify-content: space-evenly;
+  align-content: space-between;
+  align-items: center;
+  width: 300px;
+
+}
+
+.new-purchase-button-container .add-purchase  button {
+  display: block;
 }
 
 .new-purchase-input-container {

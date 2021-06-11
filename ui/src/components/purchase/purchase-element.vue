@@ -1,5 +1,5 @@
 <template>
-  <div class="purchase-element">
+  <div class="purchase-element" @click="viewSetupButtons = !viewSetupButtons">
     <div class="purchase-element-wrapper">
       <div class="purchase-icon">
         icon
@@ -14,12 +14,19 @@
         </div>
       </div>
     </div>
+    <div v-if="viewSetupButtons" class="purchase-setup-wrapper">
+      <button disabled>edit</button> <button @click="handleDeletePurchase">delete</button>
+    </div>
   </div>
 </template>
 <script>
 export default {
   name: 'purchase-element',
   props: {
+    id: {
+      type: Number,
+      required: true
+    },
     date: {
       type: String,
       default: ''
@@ -31,6 +38,15 @@ export default {
     title: {
       type: String,
       default: ' - '
+    },
+    deletePurchase: {
+      type: Function,
+      required: true
+    }
+  },
+  data () {
+    return {
+      viewSetupButtons: false
     }
   },
   computed: {
@@ -38,6 +54,11 @@ export default {
       const date = new Date(this.date)
 
       return date.toLocaleString()
+    }
+  },
+  methods: {
+    handleDeletePurchase () {
+      this.deletePurchase(this.id)
     }
   }
 }
@@ -47,6 +68,12 @@ export default {
 .purchase-element .purchase-element-wrapper {
   display: flex;
   justify-content: space-around;
+}
+
+.purchase-element .purchase-setup-wrapper {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
 }
 
 .purchase-element .purchase-element-wrapper .purchase-icon {

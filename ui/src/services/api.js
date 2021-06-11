@@ -55,6 +55,31 @@ const ApiService = {
     } catch (e) {
       console.info(e)
     }
+  },
+  async delete (url, id, router) {
+    const token = localStorage.getItem('access')
+    const options = {
+      method: 'delete',
+      mode: 'cors',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    }
+
+    try {
+      const res = await fetch(`${url}${id}/`, options)
+      const { status, statusText } = res
+      if (status === 401 && statusText === 'Unauthorized') {
+        localStorage.removeItem('access')
+        localStorage.removeItem('expireDate')
+        localStorage.removeItem('refresh')
+        router.push('/login')
+      }
+      return await res.json()
+    } catch (e) {
+      console.info(e)
+    }
   }
 }
 

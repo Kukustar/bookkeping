@@ -1,6 +1,6 @@
 <template>
   <div class="header-container">
-    <h1>Purchase list</h1>
+    <h1>balance - {{balance}}</h1>
     <button @click="handleExitButton">exit</button>
   </div>
   <new-purchase/>
@@ -30,30 +30,48 @@ export default {
     const purchaseList = ref([])
     const currentPage = ref(1)
     const purchaseCount = ref(0)
+    const balance = ref(0)
 
     const setCurrentPage = (page) => {
       currentPage.value = page
+    }
+    const loadBalance = async () => {
+      const { results } = await ApiService.get('http://localhost:3003/balance/', {}, router)
+      balance.value = results[0].mount
     }
     const loadPurchaseList = async (page) => {
       const { results, count } = await ApiService.get(`http://localhost:3003/purchases/?page=${page}`, {}, router)
       purchaseCount.value = count
       purchaseList.value = results
     }
-    const addNewPurchase = async (purcachse) => {
-      await ApiService.post('http://localhost:3003/purchases/', purcachse)
+    const addNewPurchase = async (purchas) => {
+      await ApiService.post('http://localhost:3003/purchases/', purchas)
       await loadPurchaseList(currentPage.value)
+      await loadBalance()
     }
-    onMounted(() => loadPurchaseList(currentPage.value))
+    const deletePurchase = async (id) => {
+      await ApiService.delete('http://localhost:3003/purchases/', id)
+      await loadPurchaseList(currentPage.value)
+      await loadBalance()
+    }
+
+    onMounted(() => {
+      loadPurchaseList(currentPage.value)
+      loadBalance()
+    }
+    )
 
     provide('purchase-list', purchaseList)
     provide('add-new-purchase', addNewPurchase)
+    provide('delete-purchase', deletePurchase)
     provide('current-page', currentPage)
 
     return {
       loadPurchaseList,
       currentPage,
       setCurrentPage,
-      purchaseCount
+      purchaseCount,
+      balance
     }
   },
   methods: {
@@ -81,9 +99,14 @@ html {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+
 .header-container {
   display: flex;
   align-items: center;
   justify-content: space-between
+}
+
+.header-container h1 {
+  margin-left: 20px;
 }
 </style>
