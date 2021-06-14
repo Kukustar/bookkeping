@@ -1,3 +1,27 @@
+import { JwtTokenWorker } from '../jwt-guard'
+
+/**
+ *
+ * @param apiRequest
+ * @param logout
+ * @returns {Promise<*>}
+ * @constructor
+ */
+async function JWTGuardDecorator (apiRequest, logout) {
+  const JWTGuard = new JwtTokenWorker()
+  try {
+    if (!JWTGuard.isRefreshTokenValid()) {
+      logout()
+    }
+    if (!JWTGuard.isAccessTokenValid() && JWTGuard.isRefreshTokenValid()) {
+      await JWTGuard.updateTokens()
+    }
+    return await apiRequest(() => JWTGuard.getAccessToken(), () => JWTGuard.clearTokens())
+  } catch (e) {
+    console.info(e)
+  }
+}
+
 const ApiService = {
   /**
    *
@@ -7,79 +31,58 @@ const ApiService = {
    * @returns {Promise<void>}
    */
   async get (url, query, router) {
-    const token = localStorage.getItem('access')
-    const options = {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-    try {
-      // eslint-disable-next-line
-      const res = await fetch(`${url}`, options)
+    return await JWTGuardDecorator(async function (getAccessToken, clearTokens) {
+      const res = await fetch(`${url}`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`
+        }
+      })
       const { status, statusText } = res
       if (status === 401 && statusText === 'Unauthorized') {
-        localStorage.removeItem('access')
-        localStorage.removeItem('expireDate')
-        localStorage.removeItem('refresh')
+        clearTokens()
         router.push('/login')
       }
       return await res.json()
-    } catch (e) {
-      console.info(e)
-    }
+    }, () => router.push('/login'))
   },
   async post (url, data, router) {
-    const token = localStorage.getItem('access')
-    const options = {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    }
-
-    try {
-      const res = await fetch(`${url}`, options)
+    return await JWTGuardDecorator(async function (getAccessToken, clearTokens) {
+      const res = await fetch(`${url}`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
       const { status, statusText } = res
       if (status === 401 && statusText === 'Unauthorized') {
-        localStorage.removeItem('access')
-        localStorage.removeItem('expireDate')
-        localStorage.removeItem('refresh')
+        clearTokens()
         router.push('/login')
       }
       return await res.json()
-    } catch (e) {
-      console.info(e)
-    }
+    }, () => router.push('/login'))
   },
   async delete (url, id, router) {
-    const token = localStorage.getItem('access')
-    const options = {
-      method: 'delete',
-      mode: 'cors',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    }
-
-    try {
-      const res = await fetch(`${url}${id}/`, options)
+    return JWTGuardDecorator(async function (getAccessToken, clearTokens) {
+      const res = await fetch(`${url}${id}/`, {
+        method: 'delete',
+        mode: 'cors',
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+          'Content-Type': 'application/json'
+        }
+      })
       const { status, statusText } = res
       if (status === 401 && statusText === 'Unauthorized') {
-        localStorage.removeItem('access')
-        localStorage.removeItem('expireDate')
-        localStorage.removeItem('refresh')
+        clearTokens()
         router.push('/login')
       }
       return await res.json()
-    } catch (e) {
-      console.info(e)
-    }
+    }, () => router.push('/login'))
   }
 }
 
