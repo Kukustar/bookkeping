@@ -78,4 +78,9 @@ export default {
   align-items: center
 }
 
+.new-purchase-input-container input {
+  height: 40px;
+  text-align: center;
+}
+
 </style>
