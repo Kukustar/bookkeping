@@ -1,24 +1,43 @@
 <template>
   <div class="purchase-element" @click="viewSetupButtons = !viewSetupButtons">
-    <div class="purchase-element-wrapper">
-      <div class="purchase-title-time">
-        <b>{{  title }}</b>
-        <p><span>{{  dateToView }}</span></p>
-      </div>
-      <div class="purchase-cost">
-        <div class="purchase-cost-wrapper">
-          <p>{{ cost }} ₽</p>
-        </div>
-      </div>
-    </div>
+    <v-card elevation="1">
+      <v-card-header>
+        <v-card-header-text>
+          <v-card-title>
+            <div class="purchase-title">
+              <div>{{  title }}</div>
+              <div>{{ cost }} ₽</div>
+            </div>
+
+          </v-card-title>
+          <v-card-subtitle>
+            {{ dateToView}}
+          </v-card-subtitle>
+        </v-card-header-text>
+      </v-card-header>
+    </v-card>
     <div v-if="viewSetupButtons" class="purchase-setup-wrapper">
       <button disabled>edit</button> <button @click="handleDeletePurchase">delete</button>
     </div>
   </div>
 </template>
 <script>
+import {
+  VCard,
+  VCardHeader,
+  VCardTitle,
+  VCardSubtitle,
+  VCardHeaderText
+} from 'vuetify'
 export default {
   name: 'purchase-element',
+  components: {
+    VCard,
+    VCardHeader,
+    VCardTitle,
+    VCardSubtitle,
+    VCardHeaderText
+  },
   props: {
     id: {
       type: Number,
@@ -61,38 +80,11 @@ export default {
 }
 </script>
 <style>
-
-.purchase-element .purchase-element-wrapper {
-  display: flex;
-  justify-content: space-around;
-}
-
-.purchase-element .purchase-setup-wrapper {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 10px;
-}
-
-.purchase-element .purchase-element-wrapper .purchase-icon {
-  display: block;
-}
-
-.purchase-element .purchase-element-wrapper .purchase-title-time {
-  display: block;
-}
-
-.purchase-element .purchase-element-wrapper .purchase-cost {
-  display: block;
-  margin: 0;
-}
-
-.purchase-element .purchase-element-wrapper .purchase-cost .purchase-cost-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.purchase-cost .purchase-cost-wrapper p {
-  display: block;
-}
+  .purchase-title {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+    cursor: pointer;
+  }
 </style>

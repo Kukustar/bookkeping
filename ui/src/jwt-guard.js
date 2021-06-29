@@ -156,8 +156,9 @@ export default function jwtGuard (to, from, next) {
   const JWTGuard = new JwtTokenWorker()
   const isAccessAndRefreshValid = JWTGuard.isAccessTokenValid() && JWTGuard.isRefreshTokenValid()
   const isGoNotToLogin = to.name !== 'Login'
-
-  if (isGoNotToLogin && isAccessAndRefreshValid) {
+  if (to.path === '/') {
+    next('/home')
+  } else if (isGoNotToLogin && isAccessAndRefreshValid) {
     JWTGuard.updateTokens(() => next(), () => next({ name: 'Login' }))
   } else next()
 }

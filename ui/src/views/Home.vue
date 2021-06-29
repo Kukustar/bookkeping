@@ -1,10 +1,12 @@
 <template>
   <div class="header-container">
     <h1>balance: {{balance}}</h1>
-    <button @click="handleExitButton">exit</button>
   </div>
+
   <new-purchase/>
+  <VDivider></VDivider>
   <purchase-list/>
+
   <pagination
     v-if="purchaseCount > 0"
     :load-next-purchase-page="handleClickNextPage"
@@ -17,6 +19,8 @@
 import { ref, onMounted, provide } from 'vue'
 import { useRouter } from 'vue-router'
 
+import { VDivider } from 'vuetify'
+
 import PurchaseList from '../components/purchase/purchase-list'
 import ApiService from '../services/api'
 import NewPurchase from '../components/purchase/new-purchase'
@@ -26,7 +30,7 @@ import { API_HOST } from '../constants'
 
 export default {
   name: 'Home',
-  components: { Pagination, NewPurchase, PurchaseList },
+  components: { Pagination, NewPurchase, PurchaseList, VDivider },
   setup () {
     const router = useRouter()
 
