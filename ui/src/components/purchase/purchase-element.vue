@@ -1,9 +1,6 @@
 <template>
   <div class="purchase-element" @click="viewSetupButtons = !viewSetupButtons">
     <div class="purchase-element-wrapper">
-      <div class="purchase-icon">
-        icon
-      </div>
       <div class="purchase-title-time">
         <b>{{  title }}</b>
         <p><span>{{  dateToView }}</span></p>
