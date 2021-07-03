@@ -1,28 +1,56 @@
 <template>
-  <div class="new-purchase-button-container">
-    <div class="new-purchase-input-container" v-if="isAddNewPurchase">
-      <div class="input-wrapper"><input placeholder="cost ₽" type="number" v-model="cost"/></div>
-      <div class="input-wrapper"><input placeholder="title" v-model="title"/></div>
-      <div class="add-purchase">
-        <button @click="addNewPurchase">add</button>
-        <button @click="isAddNewPurchase = !isAddNewPurchase">cancel</button>
+
+    <div class="new-purchase-button-container" >
+      <v-card elevation="1" v-if="isAddNewPurchase">
+      <div class="new-purchase-input-container" >
+        <div class="input-wrapper">
+          <material-input type="number" label="cost ₽" :updater="updateCost"/>
+        </div>
+        <div class="input-wrapper">
+          <material-input type="text" label="title" :updater="updateTitle"/>
+        </div>
+        <div class="add-purchase">
+          <v-btn
+            :style="{color: '#ffffff'}"
+            @click="addNewPurchase"
+            :color="componentColor.get('primary-color')"
+          >add
+          </v-btn>
+          <v-btn
+            :color="componentColor.get('warning-color')"
+            :style="{color: '#ffffff'}"
+            @click="isAddNewPurchase = !isAddNewPurchase">
+            cancel
+          </v-btn>
+        </div>
+      </div>
+      </v-card>
+      <div v-else>
+        <v-btn
+          :style="{color: '#ffffff'}"
+          :color="componentColor.get('primary-color')"
+          @click="isAddNewPurchase= !isAddNewPurchase"
+        >
+          add
+        </v-btn>
       </div>
     </div>
-    <div v-else>
-      <button @click="isAddNewPurchase= !isAddNewPurchase">add</button>
-    </div>
-  </div>
 
 </template>
 
 <script>
 import { inject } from 'vue'
+import MaterialInput from '../material-input'
 
 export default {
   name: 'new-purchase',
+  components: {
+    MaterialInput
+  },
   setup () {
     return {
-      addNew: inject('add-new-purchase')
+      addNew: inject('add-new-purchase'),
+      componentColor: inject('component-colors')
     }
   },
   data () {
@@ -33,6 +61,12 @@ export default {
     }
   },
   methods: {
+    updateCost (e) {
+      this.cost = e.target.value
+    },
+    updateTitle (e) {
+      this.title = e.target.value
+    },
     addNewPurchase () {
       this.isAddNewPurchase = false
       this.addNew({
@@ -50,6 +84,7 @@ export default {
 
 <style>
 .new-purchase-button-container {
+  padding-top: 5px;
   display: flex;
   justify-content: space-around;
 }
@@ -58,7 +93,7 @@ export default {
   margin-bottom: 20px;
 }
 
-.new-purchase-button-container .add-purchase   {
+.new-purchase-button-container .add-purchase {
   display: flex;
   justify-content: space-evenly;
   align-content: space-between;
@@ -67,15 +102,16 @@ export default {
 
 }
 
-.new-purchase-button-container .add-purchase  button {
-  display: block;
-}
-
 .new-purchase-input-container {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center
+}
+
+.new-purchase-input-container input {
+  height: 40px;
+  text-align: center;
 }
 
 </style>

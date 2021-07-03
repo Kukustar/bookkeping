@@ -4,7 +4,7 @@ import Login from '../views/Login'
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: Home
   },

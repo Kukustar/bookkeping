@@ -1,20 +1,38 @@
 <template>
   <div class="pagination-container">
     <div class="pagination-button-wrapper">
-      <button :disabled="!isCanViewPrevButton"  @click="loadPrevPurchasePage">prev</button>
+      <v-btn
+        :style="{color: '#ffffff'}"
+        :color="componentColor.get('primary-color')"
+        :disabled="!isCanViewPrevButton"
+        @click="loadPrevPurchasePage">
+        prev
+      </v-btn>
     </div>
     <div class="pagination-current-page-wrapper">
       <p>{{ currentPage }}</p>
     </div>
     <div class="pagination-button-wrapper">
-      <button :disabled="!isCanViewNextButton" @click="loadNextPurchasePage">next</button>
+      <v-btn
+        :style="{color: '#ffffff'}"
+        :color="componentColor.get('primary-color')"
+        :disabled="!isCanViewNextButton"
+        @click="loadNextPurchasePage">
+        next
+      </v-btn>
     </div>
   </div>
 </template>
 
 <script>
+import { inject } from 'vue'
 export default {
   name: 'pagination',
+  setup () {
+    return {
+      componentColor: inject('component-colors')
+    }
+  },
   props: {
     loadNextPurchasePage: {
       type: Function,
@@ -35,9 +53,7 @@ export default {
   },
   computed: {
     isCanViewNextButton () {
-      // todo move 25 to constants
-      const totalPages = parseInt(String(this.count / 25))
-      return this.currentPage < totalPages
+      return this.count - this.currentPage * 25 > 0
     },
     isCanViewPrevButton () {
       return this.currentPage > 1

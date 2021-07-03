@@ -1,27 +1,67 @@
 <template>
   <div class="purchase-element" @click="viewSetupButtons = !viewSetupButtons">
-    <div class="purchase-element-wrapper">
-      <div class="purchase-icon">
-        icon
-      </div>
-      <div class="purchase-title-time">
-        <b>{{  title }}</b>
-        <p><span>{{  dateToView }}</span></p>
-      </div>
-      <div class="purchase-cost">
-        <div class="purchase-cost-wrapper">
-          <p>{{ cost }} ₽</p>
+    <v-card elevation="1">
+      <v-card-header>
+        <v-card-header-text>
+          <v-card-title>
+            <div class="purchase-title">
+              <div>{{ title }}</div>
+              <div>{{ cost }} ₽</div>
+            </div>
+
+          </v-card-title>
+          <v-card-subtitle>
+            {{ dateToView }}
+          </v-card-subtitle>
+        </v-card-header-text>
+      </v-card-header>
+      <div v-if="viewSetupButtons" class="purchase-setup-wrapper">
+        <div style="width: 100px">
+          <v-btn :disabled="true"  block color="#3f51b5" :style="{color: '#ffffff'}">
+            edit
+          </v-btn>
+        </div>
+        <div style="width: 100px">
+          <v-btn @click="handleDeletePurchase"
+                 block
+                 :color="componentColors.get('danger-color')"
+                 :style="{color: '#ffffff'}">
+            delete
+          </v-btn>
         </div>
       </div>
-    </div>
-    <div v-if="viewSetupButtons" class="purchase-setup-wrapper">
-      <button disabled>edit</button> <button @click="handleDeletePurchase">delete</button>
-    </div>
+    </v-card>
+
   </div>
 </template>
 <script>
+import { inject } from 'vue'
+// import { primaryColor, dangerColor } from '../../services/color-servise'
+
+import {
+  VCard,
+  VCardHeader,
+  VCardTitle,
+  VCardSubtitle,
+  VCardHeaderText,
+  VBtn
+} from 'vuetify'
+
 export default {
   name: 'purchase-element',
+  setup () {
+    return {
+      componentColors: inject('component-colors')
+    }
+  },
+  components: {
+    VCard,
+    VCardHeader,
+    VCardTitle,
+    VCardSubtitle,
+    VCardHeaderText,
+    VBtn
+  },
   props: {
     id: {
       type: Number,
@@ -64,38 +104,18 @@ export default {
 }
 </script>
 <style>
+.purchase-title {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  cursor: pointer;
+}
 
-.purchase-element .purchase-element-wrapper {
+.purchase-setup-wrapper {
+  padding-top: 10px;
+  padding-bottom: 10px;
   display: flex;
   justify-content: space-around;
-}
-
-.purchase-element .purchase-setup-wrapper {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 10px;
-}
-
-.purchase-element .purchase-element-wrapper .purchase-icon {
-  display: block;
-}
-
-.purchase-element .purchase-element-wrapper .purchase-title-time {
-  display: block;
-}
-
-.purchase-element .purchase-element-wrapper .purchase-cost {
-  display: block;
-  margin: 0;
-}
-
-.purchase-element .purchase-element-wrapper .purchase-cost .purchase-cost-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.purchase-cost .purchase-cost-wrapper p {
-  display: block;
 }
 </style>

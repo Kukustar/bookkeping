@@ -1,11 +1,14 @@
 <template>
   <div class="header-container">
-    <h1>balance - {{balance}}</h1>
-    <button @click="handleExitButton">exit</button>
+    <h1>balance: {{balance}}</h1>
   </div>
+
   <new-purchase/>
+  <VDivider></VDivider>
   <purchase-list/>
+
   <pagination
+    v-if="purchaseCount > 0"
     :load-next-purchase-page="handleClickNextPage"
     :load-prev-purchase-page="handleClickPrevPage"
     :current-page="currentPage"
@@ -16,14 +19,18 @@
 import { ref, onMounted, provide } from 'vue'
 import { useRouter } from 'vue-router'
 
+import { VDivider } from 'vuetify'
+
 import PurchaseList from '../components/purchase/purchase-list'
 import ApiService from '../services/api'
 import NewPurchase from '../components/purchase/new-purchase'
 import Pagination from '../components/purchase/pagination'
 
+import { API_HOST } from '../constants'
+
 export default {
   name: 'Home',
-  components: { Pagination, NewPurchase, PurchaseList },
+  components: { Pagination, NewPurchase, PurchaseList, VDivider },
   setup () {
     const router = useRouter()
 
@@ -36,21 +43,21 @@ export default {
       currentPage.value = page
     }
     const loadBalance = async () => {
-      const { results } = await ApiService.get('http://localhost:3003/balance/', {}, router)
+      const { results } = await ApiService.get(`${API_HOST}/balance/`, {}, router)
       balance.value = results[0].mount
     }
     const loadPurchaseList = async (page) => {
-      const { results, count } = await ApiService.get(`http://localhost:3003/purchases/?page=${page}`, {}, router)
+      const { results, count } = await ApiService.get(`${API_HOST}/purchases/?page=${page}`, {}, router)
       purchaseCount.value = count
       purchaseList.value = results
     }
     const addNewPurchase = async (purchas) => {
-      await ApiService.post('http://localhost:3003/purchases/', purchas)
+      await ApiService.post(`${API_HOST}/purchases/`, purchas)
       await loadPurchaseList(currentPage.value)
       await loadBalance()
     }
     const deletePurchase = async (id) => {
-      await ApiService.delete('http://localhost:3003/purchases/', id)
+      await ApiService.delete(`${API_HOST}/purchases/`, id)
       await loadPurchaseList(currentPage.value)
       await loadBalance()
     }
@@ -103,7 +110,8 @@ html {
 .header-container {
   display: flex;
   align-items: center;
-  justify-content: space-between
+  justify-content: space-around;
+  min-width: 350px;
 }
 
 .header-container h1 {

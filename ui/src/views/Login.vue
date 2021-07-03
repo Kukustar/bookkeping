@@ -1,49 +1,54 @@
 <template>
   <form :onsubmit="singUp" class="login-form-container">
-    <input placeholder="username" v-model="username"/>
-    <input placeholder="password" v-model="password" type="password"/>
-    <button @click="singUp">Sing UP</button>
-    <button @click="singUpAdmin">Sing UP admin</button>
+      <div style="width: 250px">
+        <material-input type="text" label="username" :updater="updateUserName"/>
+      </div>
+
+      <div style="width: 250px">
+        <material-input type="password" label="password" :updater="updatePassword"/>
+      </div>
+
+      <div style="width: 250px">
+        <v-btn @click="singUp" block :color="componentColors.get('primary-color')" :style="{color: '#ffffff'}">
+          Sing UP
+        </v-btn>
+      </div>
   </form>
 </template>
 <script>
+import { ref, inject } from 'vue'
+import { API_HOST } from '../constants'
+import { JwtTokenWorker } from '../jwt-guard'
+import MaterialInput from '../components/material-input'
+
 export default {
   name: 'Login',
-  data () {
+  components: { MaterialInput },
+
+  setup () {
+    const username = ref('')
+    const password = ref('')
+
+    const updateUserName = (event) => {
+      username.value = event.target.value
+    }
+
+    const updatePassword = (event) => {
+      password.value = event.target.value
+    }
+
     return {
-      username: '',
-      password: ''
+      username,
+      password,
+      updatePassword,
+      updateUserName,
+      componentColors: inject('component-colors')
     }
   },
   methods: {
-    singUpAdmin () {
-      fetch('http://localhost:3003/api/token/', {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: 'admin',
-          password: 'admin'
-        })
-      })
-        .then(r => r.json())
-        .then(r => {
-          const { refresh, access } = r
-          const nowDate = new Date()
-          const expireDate = new Date(nowDate.getTime() + 5 * 60000)
-          const refreshTokenExpireDate = new Date(nowDate.getTime() + 1440 * 60000)
-          const unixRefreshTokenExpireDate = +new Date(refreshTokenExpireDate)
-          const unixExpireDate = +new Date(expireDate)
-
-          localStorage.setItem('refresh', refresh)
-          localStorage.setItem('access', access)
-          localStorage.setItem('expireDate', String(unixExpireDate))
-          localStorage.setItem('expireRefreshTokenExpireDate', String(unixRefreshTokenExpireDate))
-          this.$router.push('/')
-        })
-        .catch(e => console.info(e))
-    },
-    singUp () {
-      fetch('http://localhost:3003/api/token/', {
+    singUp (e) {
+      e.preventDefault()
+      fetch(`${API_HOST}/api/token/`, {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -51,17 +56,20 @@ export default {
           password: this.password
         })
       })
-        .then(r => r.json())
+        .then(r => {
+          const { status } = r
+          if (status === 200) {
+            return r.json()
+          } else {
+            throw new Error('wrong password')
+          }
+        })
         .then(r => {
           const { refresh, access } = r
-          const nowDate = new Date()
-          const expireDate = new Date(nowDate.getTime() + 5 * 60000)
-          const unixExpireDate = +new Date(expireDate)
-
-          localStorage.setItem('refresh', refresh)
-          localStorage.setItem('access', access)
-          localStorage.setItem('expireDate', String(unixExpireDate))
-          this.$router.push('/')
+          const JWTGuard = new JwtTokenWorker()
+          JWTGuard.updateAccessTokenContext(access)
+          JWTGuard.updateRefreshTokenContext(refresh)
+          this.$router.replace('/home')
         })
         .catch(e => console.info(e))
     }
@@ -79,16 +87,9 @@ html {
 .login-form-container {
   display: flex;
   flex-direction: column;
-  align-content: flex-start;
-  height: 500px;
+  align-items: center;
   justify-content: center;
-}
-
-.login-form-container input,
-.login-form-container button {
-  margin-top: 5px;
-  height: 40px;
-  text-align: center;
+  height: 500px;
 }
 
 </style>
