@@ -9,17 +9,18 @@
       </div>
 
       <div style="width: 250px">
-        <v-btn @click="singUp" block color="#3f51b5" :style="{color: '#ffffff'}">
+        <v-btn @click="singUp" block :color="componentColors.get('primary-color')" :style="{color: '#ffffff'}">
           Sing UP
         </v-btn>
       </div>
   </form>
 </template>
 <script>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import { API_HOST } from '../constants'
 import { JwtTokenWorker } from '../jwt-guard'
 import MaterialInput from '../components/material-input'
+// import { primaryColor } from '../services/color-servise'
 
 export default {
   name: 'Login',
@@ -41,8 +42,18 @@ export default {
       username,
       password,
       updatePassword,
-      updateUserName
+      updateUserName,
+      componentColors: inject('component-colors')
     }
+  },
+  computed: {
+    // componentColors () {
+    //   return new Map()
+    //     .set('primary-color', primaryColor)
+    // },
+    // primaryColor () {
+    //   return this.componentColors.get('primary-color')
+    // }
   },
   methods: {
     singUp (e) {

@@ -1,6 +1,6 @@
 <template>
   <v-app style="background-color: #fafafa">
-    <v-app-bar :style="{backgroundColor: colors.indigo.base, color: '#ffffff'}" app>
+    <v-app-bar :style="{backgroundColor: componentColors.get('primary-color'), color: '#ffffff'}" app>
 
       <v-app-bar-nav-icon
         v-if="isCanViewMenuButton"
@@ -9,7 +9,7 @@
       ></v-app-bar-nav-icon>
       <div v-else style="width: 48px"></div>
 
-      <VAppBarTitle >Login</VAppBarTitle>
+      <VAppBarTitle >{{ appBarTitle }}</VAppBarTitle>
 
     </v-app-bar>
 
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import { ref, provide } from 'vue'
 import {
   VMain,
   VApp,
@@ -61,6 +62,7 @@ import {
   VAppBarTitle
 } from 'vuetify'
 import colors from 'vuetify/lib/util/colors'
+import { dangerColor, primaryColor, warningColor } from './services/color-servise'
 
 export default {
   name: 'App',
@@ -73,12 +75,32 @@ export default {
     VNavigationDrawer,
     VAppBarTitle
   },
+  setup () {
+    const componentColors = ref(new Map()
+      .set('primary-color', primaryColor)
+      .set('warning-color', warningColor)
+      .set('danger-color', dangerColor)
+    )
+
+    provide('component-colors', componentColors)
+
+    return {
+      componentColors
+    }
+  },
   computed: {
     colors () {
       return colors
     },
     isCanViewMenuButton () {
       return this.$route.path !== '/login'
+    },
+    appBarTitle () {
+      const titleVsRoute = new Map()
+        .set('/home', 'Purchase list')
+        .set('/login', 'Login')
+
+      return titleVsRoute.get(this.$route.path)
     }
   },
   methods: {

@@ -1,20 +1,38 @@
 <template>
   <div class="pagination-container">
     <div class="pagination-button-wrapper">
-      <button :disabled="!isCanViewPrevButton"  @click="loadPrevPurchasePage">prev</button>
+      <v-btn
+        :style="{color: '#ffffff'}"
+        :color="componentColor.get('primary-color')"
+        :disabled="!isCanViewPrevButton"
+        @click="loadPrevPurchasePage">
+        prev
+      </v-btn>
     </div>
     <div class="pagination-current-page-wrapper">
       <p>{{ currentPage }}</p>
     </div>
     <div class="pagination-button-wrapper">
-      <button :disabled="!isCanViewNextButton" @click="loadNextPurchasePage">next</button>
+      <v-btn
+        :style="{color: '#ffffff'}"
+        :color="componentColor.get('primary-color')"
+        :disabled="!isCanViewNextButton"
+        @click="loadNextPurchasePage">
+        next
+      </v-btn>
     </div>
   </div>
 </template>
 
 <script>
+import { inject } from 'vue'
 export default {
   name: 'pagination',
+  setup () {
+    return {
+      componentColor: inject('component-colors')
+    }
+  },
   props: {
     loadNextPurchasePage: {
       type: Function,

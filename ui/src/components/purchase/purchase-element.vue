@@ -5,38 +5,62 @@
         <v-card-header-text>
           <v-card-title>
             <div class="purchase-title">
-              <div>{{  title }}</div>
+              <div>{{ title }}</div>
               <div>{{ cost }} ₽</div>
             </div>
 
           </v-card-title>
           <v-card-subtitle>
-            {{ dateToView}}
+            {{ dateToView }}
           </v-card-subtitle>
         </v-card-header-text>
       </v-card-header>
+      <div v-if="viewSetupButtons" class="purchase-setup-wrapper">
+        <div style="width: 100px">
+          <v-btn :disabled="true"  block color="#3f51b5" :style="{color: '#ffffff'}">
+            edit
+          </v-btn>
+        </div>
+        <div style="width: 100px">
+          <v-btn @click="handleDeletePurchase"
+                 block
+                 :color="componentColors.get('danger-color')"
+                 :style="{color: '#ffffff'}">
+            delete
+          </v-btn>
+        </div>
+      </div>
     </v-card>
-    <div v-if="viewSetupButtons" class="purchase-setup-wrapper">
-      <button disabled>edit</button> <button @click="handleDeletePurchase">delete</button>
-    </div>
+
   </div>
 </template>
 <script>
+import { inject } from 'vue'
+// import { primaryColor, dangerColor } from '../../services/color-servise'
+
 import {
   VCard,
   VCardHeader,
   VCardTitle,
   VCardSubtitle,
-  VCardHeaderText
+  VCardHeaderText,
+  VBtn
 } from 'vuetify'
+
 export default {
   name: 'purchase-element',
+  setup () {
+    return {
+      componentColors: inject('component-colors')
+    }
+  },
   components: {
     VCard,
     VCardHeader,
     VCardTitle,
     VCardSubtitle,
-    VCardHeaderText
+    VCardHeaderText,
+    VBtn
   },
   props: {
     id: {
@@ -80,11 +104,18 @@ export default {
 }
 </script>
 <style>
-  .purchase-title {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    width: 100%;
-    cursor: pointer;
-  }
+.purchase-title {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  cursor: pointer;
+}
+
+.purchase-setup-wrapper {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: space-around;
+}
 </style>
