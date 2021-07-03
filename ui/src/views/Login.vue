@@ -20,7 +20,6 @@ import { ref, inject } from 'vue'
 import { API_HOST } from '../constants'
 import { JwtTokenWorker } from '../jwt-guard'
 import MaterialInput from '../components/material-input'
-// import { primaryColor } from '../services/color-servise'
 
 export default {
   name: 'Login',
@@ -45,15 +44,6 @@ export default {
       updateUserName,
       componentColors: inject('component-colors')
     }
-  },
-  computed: {
-    // componentColors () {
-    //   return new Map()
-    //     .set('primary-color', primaryColor)
-    // },
-    // primaryColor () {
-    //   return this.componentColors.get('primary-color')
-    // }
   },
   methods: {
     singUp (e) {
