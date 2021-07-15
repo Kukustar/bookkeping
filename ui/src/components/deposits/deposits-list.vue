@@ -1,13 +1,13 @@
 <template>
   <div class="purchase-list-container container">
     <transaction-element
-      v-for="(purchase, index) in this.list"
+      v-for="(deposit, index) in this.list"
       :key="index"
-      :cost="purchase.cost"
-      :date="purchase.date"
-      :title="purchase.title"
-      :id="purchase.id"
-      :delete-transaction="deletePurchase"
+      :cost="deposit.amount"
+      :date="deposit.date"
+      :title="deposit.title"
+      :id="deposit.id"
+      :delete-transaction="deleteDeposit"
     />
   </div>
 </template>
@@ -17,12 +17,12 @@ import { inject } from 'vue'
 import TransactionElement from '../common/transaction-element'
 
 export default {
-  name: 'purchase-list',
+  name: 'deposits-list',
   components: { TransactionElement },
   setup () {
     return {
-      list: inject('purchase-list'),
-      deletePurchase: inject('delete-purchase')
+      list: inject('deposits-list'),
+      deleteDeposit: inject('delete-deposit')
     }
   }
 }

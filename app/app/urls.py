@@ -37,6 +37,7 @@ class UserViewSet(viewsets.ModelViewSet):
 router = routers.DefaultRouter()
 router.register(r'purchases', views.PurchaseViewSet)
 router.register(r'balance', views.BalanceViewSet)
+router.register(r'deposits', views.DepositViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

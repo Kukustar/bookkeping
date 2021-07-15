@@ -1,10 +1,10 @@
 <template>
-  <div class="purchase-element" @click="viewSetupButtons = !viewSetupButtons">
+  <div class="transaction-element" @click="viewSetupButtons = !viewSetupButtons">
     <v-card elevation="1">
       <v-card-header>
         <v-card-header-text>
           <v-card-title>
-            <div class="purchase-title">
+            <div class="transaction-title">
               <div>{{ title }}</div>
               <div>{{ cost }} ₽</div>
             </div>
@@ -15,14 +15,14 @@
           </v-card-subtitle>
         </v-card-header-text>
       </v-card-header>
-      <div v-if="viewSetupButtons" class="purchase-setup-wrapper">
+      <div v-if="viewSetupButtons" class="transaction-setup-wrapper">
         <div style="width: 100px">
           <v-btn :disabled="true"  block color="#3f51b5" :style="{color: '#ffffff'}">
             edit
           </v-btn>
         </div>
         <div style="width: 100px">
-          <v-btn @click="handleDeletePurchase"
+          <v-btn @click="handleDeleteTransaction"
                  block
                  :color="componentColors.get('danger-color')"
                  :style="{color: '#ffffff'}">
@@ -36,7 +36,6 @@
 </template>
 <script>
 import { inject } from 'vue'
-// import { primaryColor, dangerColor } from '../../services/color-servise'
 
 import {
   VCard,
@@ -48,7 +47,7 @@ import {
 } from 'vuetify'
 
 export default {
-  name: 'purchase-element',
+  name: 'transaction-element',
   setup () {
     return {
       componentColors: inject('component-colors')
@@ -79,7 +78,7 @@ export default {
       type: String,
       default: ' - '
     },
-    deletePurchase: {
+    deleteTransaction: {
       type: Function,
       required: true
     }
@@ -97,14 +96,14 @@ export default {
     }
   },
   methods: {
-    handleDeletePurchase () {
-      this.deletePurchase(this.id)
+    handleDeleteTransaction () {
+      this.deleteTransaction(this.id)
     }
   }
 }
 </script>
 <style>
-.purchase-title {
+.transaction-title {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
@@ -112,7 +111,7 @@ export default {
   cursor: pointer;
 }
 
-.purchase-setup-wrapper {
+.transaction-setup-wrapper {
   padding-top: 10px;
   padding-bottom: 10px;
   display: flex;

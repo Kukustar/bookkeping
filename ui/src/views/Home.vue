@@ -3,14 +3,16 @@
     <h1>balance: {{balance}}</h1>
   </div>
 
-  <new-purchase/>
+  <new-transaction
+    :add-new="addNewPurchase"
+  />
   <VDivider></VDivider>
   <purchase-list/>
 
   <pagination
     v-if="purchaseCount > 0"
-    :load-next-purchase-page="handleClickNextPage"
-    :load-prev-purchase-page="handleClickPrevPage"
+    :load-next-page="handleClickNextPage"
+    :load-prev-page="handleClickPrevPage"
     :current-page="currentPage"
     :count="purchaseCount"
   />
@@ -23,14 +25,14 @@ import { VDivider } from 'vuetify'
 
 import PurchaseList from '../components/purchase/purchase-list'
 import ApiService from '../services/api'
-import NewPurchase from '../components/purchase/new-purchase'
+import NewTransaction from '../components/common/new-transaction'
 import Pagination from '../components/purchase/pagination'
 
 import { API_HOST } from '../constants'
 
 export default {
   name: 'Home',
-  components: { Pagination, NewPurchase, PurchaseList, VDivider },
+  components: { Pagination, NewTransaction, PurchaseList, VDivider },
   setup () {
     const router = useRouter()
 
@@ -42,20 +44,35 @@ export default {
     const setCurrentPage = (page) => {
       currentPage.value = page
     }
+
     const loadBalance = async () => {
       const { results } = await ApiService.get(`${API_HOST}/balance/`, {}, router)
       balance.value = results[0].mount
     }
+
     const loadPurchaseList = async (page) => {
       const { results, count } = await ApiService.get(`${API_HOST}/purchases/?page=${page}`, {}, router)
       purchaseCount.value = count
       purchaseList.value = results
     }
-    const addNewPurchase = async (purchas) => {
-      await ApiService.post(`${API_HOST}/purchases/`, purchas)
+    /**
+     *
+     * @param title
+     * @param cost
+     * @param date
+     * @returns {Promise<void>}
+     */
+    const addNewPurchase = async (title, cost, date) => {
+      const newPurchase = { title, cost, date, description: '' }
+      await ApiService.post(`${API_HOST}/purchases/`, newPurchase)
       await loadPurchaseList(currentPage.value)
       await loadBalance()
     }
+    /**
+     *
+     * @param id
+     * @returns {Promise<void>}
+     */
     const deletePurchase = async (id) => {
       await ApiService.delete(`${API_HOST}/purchases/`, id)
       await loadPurchaseList(currentPage.value)
@@ -65,11 +82,9 @@ export default {
     onMounted(() => {
       loadPurchaseList(currentPage.value)
       loadBalance()
-    }
-    )
+    })
 
     provide('purchase-list', purchaseList)
-    provide('add-new-purchase', addNewPurchase)
     provide('delete-purchase', deletePurchase)
     provide('current-page', currentPage)
 
@@ -78,7 +93,8 @@ export default {
       currentPage,
       setCurrentPage,
       purchaseCount,
-      balance
+      balance,
+      addNewPurchase
     }
   },
   methods: {

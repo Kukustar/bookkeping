@@ -5,7 +5,7 @@
         :style="{color: '#ffffff'}"
         :color="componentColor.get('primary-color')"
         :disabled="!isCanViewPrevButton"
-        @click="loadPrevPurchasePage">
+        @click="loadPrevPage">
         prev
       </v-btn>
     </div>
@@ -17,7 +17,7 @@
         :style="{color: '#ffffff'}"
         :color="componentColor.get('primary-color')"
         :disabled="!isCanViewNextButton"
-        @click="loadNextPurchasePage">
+        @click="loadNextPage">
         next
       </v-btn>
     </div>
@@ -34,11 +34,11 @@ export default {
     }
   },
   props: {
-    loadNextPurchasePage: {
+    loadNextPage: {
       type: Function,
       required: true
     },
-    loadPrevPurchasePage: {
+    loadPrevPage: {
       type: Function,
       required: true
     },
