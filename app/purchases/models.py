@@ -1,10 +1,18 @@
 from django.db import models
 
-class Purchase(models.Model):
-    date = models.DateTimeField('purchase date time')
+class Transaction(models.Model):
     amount = models.FloatField(default=0.0)
     title = models.CharField(max_length=200)
     description = models.CharField(blank=True, max_length=200)
+
+    class Meta:
+        abstract = True
+
+class Purchase(Transaction):
+    date = models.DateTimeField('purchase date time')
+
+class Deposit(Transaction):
+    date = models.DateTimeField('deposit date time')
 
 class Balance(models.Model):
     mount = models.FloatField(default=0.0)
@@ -18,8 +26,3 @@ class Balance(models.Model):
         self.mount = self.mount - mount
         self.save()
 
-class Deposit(models.Model):
-    date = models.DateTimeField('deposit date time')
-    amount = models.FloatField(default=0.0)
-    title = models.CharField(max_length=200)
-    description = models.CharField(blank=True, max_length=200)

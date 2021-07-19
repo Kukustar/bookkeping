@@ -33,6 +33,7 @@ export default {
     const addDeposit = async (title, amount, date) => {
       const newDeposit = { title, amount, date, description: '' }
       await ApiService.post(`${API_HOST}/deposits/`, newDeposit)
+      await loadDeposits(1)
     }
 
     const deleteDeposit = async (id) => {
