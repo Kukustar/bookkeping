@@ -6,7 +6,7 @@
           <v-card-title>
             <div class="transaction-title">
               <div>{{ title }}</div>
-              <div>{{ cost }} ₽</div>
+              <div>{{ amount }} ₽</div>
             </div>
 
           </v-card-title>
@@ -70,7 +70,7 @@ export default {
       type: String,
       default: ''
     },
-    cost: {
+    amount: {
       type: Number,
       default: 0
     },

@@ -4,7 +4,7 @@
       <v-card elevation="1" v-if="isAddNewTransaction">
       <div class="new-transaction-input-container" >
         <div class="input-wrapper">
-          <material-input :input-mode="'numeric'" type="number" label="cost ₽" :updater="updateCost"/>
+          <material-input :input-mode="'numeric'" type="number" label="cost ₽" :updater="updateAmount"/>
         </div>
         <div class="input-wrapper">
           <material-input :input-mode="'verbatim'" type="text" label="title" :updater="updateTitle"/>
@@ -61,21 +61,21 @@ export default {
   data () {
     return {
       isAddNewTransaction: false,
-      cost: '',
+      amount: '',
       title: ''
     }
   },
   methods: {
-    updateCost (e) {
-      this.cost = e.target.value
+    updateAmount (e) {
+      this.amount = e.target.value
     },
     updateTitle (e) {
       this.title = e.target.value
     },
     addNewTransaction () {
       this.isAddNewTransaction = false
-      this.addNew(this.title, this.cost, new Date())
-      this.cost = ''
+      this.addNew(this.title, this.amount, new Date())
+      this.amount = ''
       this.title = ''
     }
   }

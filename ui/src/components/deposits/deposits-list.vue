@@ -3,7 +3,7 @@
     <transaction-element
       v-for="(deposit, index) in this.list"
       :key="index"
-      :cost="deposit.amount"
+      :amount="deposit.amount"
       :date="deposit.date"
       :title="deposit.title"
       :id="deposit.id"

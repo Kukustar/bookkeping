@@ -58,12 +58,12 @@ export default {
     /**
      *
      * @param title
-     * @param cost
+     * @param amount
      * @param date
      * @returns {Promise<void>}
      */
-    const addNewPurchase = async (title, cost, date) => {
-      const newPurchase = { title, cost, date, description: '' }
+    const addNewPurchase = async (title, amount, date) => {
+      const newPurchase = { title, amount, date, description: '' }
       await ApiService.post(`${API_HOST}/purchases/`, newPurchase)
       await loadPurchaseList(currentPage.value)
       await loadBalance()

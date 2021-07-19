@@ -3,7 +3,7 @@
     <transaction-element
       v-for="(purchase, index) in this.list"
       :key="index"
-      :cost="purchase.cost"
+      :amount="purchase.amount"
       :date="purchase.date"
       :title="purchase.title"
       :id="purchase.id"

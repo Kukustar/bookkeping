@@ -10,7 +10,7 @@ class PurchaseViewSet(viewsets.ModelViewSet):
 
     def perform_destroy(self, instance):
         total_balance = Balance.objects.get(id=1)
-        total_balance.top_up_balance(getattr(instance, 'cost'))
+        total_balance.top_up_balance(getattr(instance, 'amount'))
         instance.delete()
 
 
