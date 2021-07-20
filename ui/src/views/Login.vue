@@ -5,7 +5,7 @@
       </div>
 
       <div style="width: 250px">
-        <material-input type="password" label="password" :updater="updatePassword"/>
+        <material-input type="password" label="password" :updater="updatePassword" />
       </div>
 
       <div style="width: 250px">

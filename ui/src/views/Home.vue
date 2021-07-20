@@ -3,8 +3,9 @@
     <h1>balance: {{balance}}</h1>
   </div>
 
-  <new-transaction
-    :add-new="addNewPurchase"
+  <PurchaseForm
+    :handle-create="addNewPurchase"
+    :handle-update="updatePurchase"
   />
   <VDivider></VDivider>
   <purchase-list/>
@@ -25,29 +26,50 @@ import { VDivider } from 'vuetify'
 
 import PurchaseList from '../components/purchase/purchase-list'
 import ApiService from '../services/api'
-import NewTransaction from '../components/common/new-transaction'
+import PurchaseForm from '../components/purchase/purchase-form'
 import Pagination from '../components/purchase/pagination'
 
 import { API_HOST } from '../constants'
 
 export default {
   name: 'Home',
-  components: { Pagination, NewTransaction, PurchaseList, VDivider },
+  components: { Pagination, PurchaseForm, PurchaseList, VDivider },
   setup () {
     const router = useRouter()
+
+    const showPurchaseForm = ref(false)
 
     const purchaseList = ref([])
     const currentPage = ref(1)
     const purchaseCount = ref(0)
     const balance = ref(0)
+    const purchaseTypes = ref([])
+    const tmpPurchase = ref({})
 
     const setCurrentPage = (page) => {
       currentPage.value = page
     }
 
+    const setTmpPurchase = (field, value) => {
+      tmpPurchase.value[field] = value
+    }
+
+    const clearTmpPurchase = () => {
+      tmpPurchase.value = {}
+    }
+
+    const setShowPurchaseForm = (value) => {
+      showPurchaseForm.value = value
+    }
+
+    const loadPurchaseTypes = async () => {
+      const { results } = await ApiService.get(`${API_HOST}/purchase-types/`, {}, router)
+      purchaseTypes.value = results
+    }
+
     const loadBalance = async () => {
       const { results } = await ApiService.get(`${API_HOST}/balance/`, {}, router)
-      balance.value = results[0].mount
+      balance.value = results.find(balance => balance.name === 'general').mount
     }
 
     const loadPurchaseList = async (page) => {
@@ -55,16 +77,30 @@ export default {
       purchaseCount.value = count
       purchaseList.value = results
     }
-    /**
-     *
-     * @param title
-     * @param amount
-     * @param date
-     * @returns {Promise<void>}
-     */
-    const addNewPurchase = async (title, amount, date) => {
-      const newPurchase = { title, amount, date, description: '' }
+
+    const updatePurchase = async () => {
+      const pyrchase = {
+        title: tmpPurchase.value.title,
+        amount: tmpPurchase.value.amount,
+        id: tmpPurchase.value.id,
+        date: new Date(),
+        description: ''
+      }
+      await ApiService.put(`${API_HOST}/purchases/${tmpPurchase.value.id}/`, pyrchase)
+      showPurchaseForm.value = false
+      await loadPurchaseList(currentPage.value)
+      await loadBalance()
+    }
+
+    const addNewPurchase = async () => {
+      const newPurchase = {
+        title: tmpPurchase.value.title,
+        amount: tmpPurchase.value.amount,
+        date: new Date(),
+        description: ''
+      }
       await ApiService.post(`${API_HOST}/purchases/`, newPurchase)
+      showPurchaseForm.value = false
       await loadPurchaseList(currentPage.value)
       await loadBalance()
     }
@@ -87,6 +123,13 @@ export default {
     provide('purchase-list', purchaseList)
     provide('delete-purchase', deletePurchase)
     provide('current-page', currentPage)
+    provide('purchase-types', purchaseTypes)
+    provide('load-purchase-types', loadPurchaseTypes)
+    provide('set-show-purchase-form', setShowPurchaseForm)
+    provide('show-purchase-form', showPurchaseForm)
+    provide('set-tmp-purchase', setTmpPurchase)
+    provide('clear-tmp-purchase', clearTmpPurchase)
+    provide('tmp-purchase', tmpPurchase)
 
     return {
       loadPurchaseList,
@@ -94,7 +137,8 @@ export default {
       setCurrentPage,
       purchaseCount,
       balance,
-      addNewPurchase
+      addNewPurchase,
+      updatePurchase
     }
   },
   methods: {

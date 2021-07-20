@@ -1,7 +1,7 @@
 <template>
   <div class="material-input-container">
     <fieldset class="material">
-      <input :type=type autocomplete="off" @input="updater" :inputmode="inputMode" required>
+      <input :value="value" :type=type autocomplete="off" @input="updater" :inputmode="inputMode" required>
       <hr>
       <label>{{ label }}</label>
     </fieldset>
@@ -28,6 +28,10 @@ export default {
     inputMode: {
       type: String,
       required: true
+    },
+    value: {
+      type: String,
+      default: ''
     }
   },
   computed: {

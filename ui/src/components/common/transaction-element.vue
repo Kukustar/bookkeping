@@ -17,12 +17,12 @@
       </v-card-header>
       <div v-if="viewSetupButtons" class="transaction-setup-wrapper">
         <div style="width: 100px">
-          <v-btn :disabled="true"  block color="#3f51b5" :style="{color: '#ffffff'}">
+          <v-btn @click="() => handleUpdateClick(id)"  block color="#3f51b5" :style="{color: '#ffffff'}">
             edit
           </v-btn>
         </div>
         <div style="width: 100px">
-          <v-btn @click="handleDeleteTransaction"
+          <v-btn @click="() => deleteTransaction(id)"
                  block
                  :color="componentColors.get('danger-color')"
                  :style="{color: '#ffffff'}">
@@ -81,6 +81,10 @@ export default {
     deleteTransaction: {
       type: Function,
       required: true
+    },
+    handleUpdateClick: {
+      type: Function,
+      required: true
     }
   },
   data () {
@@ -93,11 +97,6 @@ export default {
       const date = new Date(this.date)
 
       return date.toLocaleString()
-    }
-  },
-  methods: {
-    handleDeleteTransaction () {
-      this.deleteTransaction(this.id)
     }
   }
 }

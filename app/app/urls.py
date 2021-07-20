@@ -38,6 +38,7 @@ router = routers.DefaultRouter()
 router.register(r'purchases', views.PurchaseViewSet)
 router.register(r'balance', views.BalanceViewSet)
 router.register(r'deposits', views.DepositViewSet)
+router.register(r'purchase-types', views.PurchaseTypeViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

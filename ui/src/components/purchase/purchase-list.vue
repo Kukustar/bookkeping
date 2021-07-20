@@ -8,6 +8,7 @@
       :title="purchase.title"
       :id="purchase.id"
       :delete-transaction="deletePurchase"
+      :handle-update-click="handleUpdateClick"
     />
   </div>
 </template>
@@ -22,7 +23,20 @@ export default {
   setup () {
     return {
       list: inject('purchase-list'),
-      deletePurchase: inject('delete-purchase')
+      deletePurchase: inject('delete-purchase'),
+      openModal: inject('set-show-purchase-form'),
+      setTmpPurchase: inject('set-tmp-purchase')
+    }
+  },
+  methods: {
+    handleUpdateClick (id) {
+      const purchaseObject = this.list.find(purchase => purchase.id === id)
+
+      this.setTmpPurchase('title', purchaseObject.title)
+      this.setTmpPurchase('amount', purchaseObject.amount)
+      this.setTmpPurchase('id', purchaseObject.id)
+
+      this.openModal(true)
     }
   }
 }

@@ -1,7 +1,9 @@
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import PurchasesSerializer, BalanceSerializer, DepositSerializer
-from .models import Purchase, Balance, Deposit
+from .serializers import PurchasesSerializer, BalanceSerializer, \
+    DepositSerializer, PurchaseTypeSerializer
+from .models import Purchase, Balance, Deposit, PurchaseType
+
 
 class PurchaseViewSet(viewsets.ModelViewSet):
     queryset = Purchase.objects.all().order_by('-date')
@@ -28,3 +30,9 @@ class DepositViewSet(viewsets.ModelViewSet):
         total_balance = Balance.objects.get(id=1)
         total_balance.reduce_the_balance(getattr(instance, 'amount'))
         instance.delete()
+
+
+class PurchaseTypeViewSet(viewsets.ModelViewSet):
+    queryset = PurchaseType.objects.all()
+    serializer_class = PurchaseTypeSerializer
+    permission_classes = [permissions.IsAuthenticated]
