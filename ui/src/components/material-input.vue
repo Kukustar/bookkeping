@@ -42,6 +42,11 @@ export default {
 }
 </script>
 <style>
+.material-input-container {
+  width: 300px;
+  margin-top: 20px;
+}
+
 form {
   margin: 20px;
   padding: 20px;

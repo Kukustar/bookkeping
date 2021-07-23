@@ -1,7 +1,3 @@
-from datetime import datetime, timedelta
-from django.db.models import Sum
-
-
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.views import APIView
@@ -51,8 +47,10 @@ class StatisticViewSet(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, response):
-        yesterday_start = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days = 1 )
-        yesterday_end = datetime.today().replace(hour=23, minute=59, second=59, microsecond=0) - timedelta(days = 1 )
-        data = Purchase.objects.filter(date__range=(yesterday_start, yesterday_end)).aggregate(Sum('amount'))
+        last_day = Purchase.get_last_day_purchase_sum()
+        today = Purchase.get_today_purchase_sum()
 
-        return Response({ 'last-day': data['amount__sum'] })
+        return Response({
+            'last-day': last_day['amount__sum'],
+            'today': today['amount__sum']
+        })
