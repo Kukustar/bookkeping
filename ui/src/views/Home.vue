@@ -69,7 +69,7 @@ export default {
 
     const loadBalance = async () => {
       const { results } = await ApiService.get(`${API_HOST}/balance/`, {}, router)
-      balance.value = results.find(balance => balance.name === 'general').mount
+      balance.value = results.find(balance => balance.name === 'General').mount
     }
 
     const loadPurchaseList = async (page) => {
