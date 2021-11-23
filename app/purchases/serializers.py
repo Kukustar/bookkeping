@@ -23,6 +23,7 @@ class PurchasesSerializer(serializers.HyperlinkedModelSerializer):
         return Purchase.objects.create(**validated_data)
 
 
+
 class BalanceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Balance

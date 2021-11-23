@@ -44,7 +44,9 @@ class Balance(models.Model):
     name = models.CharField(blank=True, max_length=200)
 
     def top_up_balance(self, mount):
+        print(self.mount)
         self.mount = self.mount + mount
+        print(self.mount)
         self.save()
 
     def reduce_the_balance(self, mount):

@@ -38,4 +38,4 @@
 ```docker volume rm "volume_name"``` Deleting a container
 
 ```docker ps``` List of enabled dockers
-```docker exec -it <  id of container  > sh``` Enter the container
+```docker exec -it <  id of container  > sh```Enter the container
