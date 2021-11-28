@@ -39,3 +39,9 @@
 
 ```docker ps``` List of enabled dockers
 ```docker exec -it <  id of container  > sh```Enter the container
+
+# About sqlite3
+
+```sqlite3 db.sqlite3``` Enter sqlite shell
+```.tables``` Looking for db tables
+```cp db.sqlite3 db.sqlite_dump``` Creating copied db for backend

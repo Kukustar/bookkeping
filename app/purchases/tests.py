@@ -5,7 +5,6 @@ from .views import *
 
 
 class PurchaseTests(TestCase):
-
     general_balance = 229
 
     def setUp(self):
@@ -42,11 +41,26 @@ class PurchaseTests(TestCase):
         expected_balance_after_first_purchase = self.general_balance - first_purchase_amount
         balance_after_one_purchases_transaction = Balance.objects.get(id=1)
 
-        self.assertEqual(balance_after_one_purchases_transaction.mount, expected_balance_after_first_purchase, 'test that after delete second purchase balance equal ...')
+        self.assertEqual(balance_after_one_purchases_transaction.mount, expected_balance_after_first_purchase,
+                         'test that after delete second purchase balance equal ...')
+
+    def test_changing_purchase(self):
+        second_purchase = 100
+        first_purchase = 10
+        first_volume = {"amount": first_purchase, "date": "2021-11-23 18:00", "title": "Beer"}
+        second_volume = {"amount": second_purchase, "date": "2021-11-23 18:00", "title": "Beer"}
+        PurchasesSerializer.create(self, validated_data=first_volume)
+        PurchasesSerializer.create(self, validated_data=second_volume)
+
+        balance_after_two_purchase = Balance.objects.get(id=1)
+        self.assertEqual(balance_after_two_purchase.mount, self.general_balance - first_purchase - second_purchase)
+
+        PurchaseViewSet.perform_destroy(self, Purchase.objects.get(id=1))
+        balance_after_delete_first_purchase = Balance.objects.get(id=1)
+        self.assertEqual(balance_after_delete_first_purchase.mount, self.general_balance - second_purchase)
 
 
 class DepositeTest(TestCase):
-
     general_balance = 229
 
     def setUp(self):
@@ -59,6 +73,18 @@ class DepositeTest(TestCase):
         deposite = Balance.objects.get(id=1)
         self.assertEqual(deposite.mount, self.general_balance + deposite_amount)
 
+    def test_change_deposite(self):
+        deposite_amount = 1000
+        changed_deposit_amount = 1200
+        first_volume = {"date": "2021-11-22 21:26", "amount": deposite_amount, "title": "Salary"}
+        second_volume = {"date": "2021-11-23 20:26", "amount": changed_deposit_amount, "title": "Salary with some extra"}
+        DepositSerializer.create(self, validated_data=first_volume)
+        DepositSerializer.create(self, validated_data=second_volume)
+        balance = Balance.objects.get(id=1)
+        self.assertEqual(balance.mount, self.general_balance + deposite_amount + changed_deposit_amount,
+                         ' сравниваю полученный баланс и 2 внесенных депозита')
 
-
+        DepositViewSet.perform_destroy(self, Deposit.objects.get(id=1))
+        balance_after_first_volume_delete = Balance.objects.get(id=1)
+        self.assertEqual(balance_after_first_volume_delete.mount, self.general_balance + changed_deposit_amount, 'сравниваю баланс со вторым депозитом, после удалнеия первого')
 

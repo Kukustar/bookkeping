@@ -31,7 +31,7 @@ class Purchase(Transaction):
     def get_today_purchase_sum():
         day_start = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
         day_end = datetime.today()
-        amount_today =  Purchase.objects.filter(date__range=(day_start, day_end)).aggregate(Sum('amount'))
+        amount_today = Purchase.objects.filter(date__range=(day_start, day_end)).aggregate(Sum('amount'))
 
         return amount_today
 
@@ -44,9 +44,7 @@ class Balance(models.Model):
     name = models.CharField(blank=True, max_length=200)
 
     def top_up_balance(self, mount):
-        print(self.mount)
         self.mount = self.mount + mount
-        print(self.mount)
         self.save()
 
     def reduce_the_balance(self, mount):
