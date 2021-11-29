@@ -98,6 +98,7 @@ export default {
     appBarTitle () {
       const titleVsRoute = new Map()
         .set('/home', 'Purchase list')
+        .set('/deposits', 'Deposits list')
         .set('/login', 'Login')
 
       return titleVsRoute.get(this.$route.path)
@@ -117,7 +118,8 @@ export default {
     drawer: false,
     group: null,
     items: [
-      { title: 'Purchases', icon: 'mdi-view-dashboard', link: '/home' }
+      { title: 'Purchases', icon: 'mdi-view-dashboard', link: '/home' },
+      { title: 'Deposits', icon: 'mdi-view-dashboard', link: '/deposits' }
     ]
   })
 }

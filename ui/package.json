@@ -13,7 +13,7 @@
     "roboto-fontface": "*",
     "vue": "^3.0.0",
     "vue-router": "^4.0.8",
-    "vuetify": "^3.0.0-alpha.7"
+    "vuetify": "v3.0.0-alpha.9"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

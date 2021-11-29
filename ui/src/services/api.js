@@ -66,6 +66,25 @@ const ApiService = {
       return await res.json()
     }, () => router.push('/login'))
   },
+  async put (url, data, router) {
+    return await JWTGuardDecorator(async function (getAccessToken, clearTokens) {
+      const res = await fetch(`${url}`, {
+        method: 'PUT',
+        mode: 'cors',
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      const { status, statusText } = res
+      if (status === 401 && statusText === 'Unauthorized') {
+        clearTokens()
+        router.push('/login')
+      }
+      return await res.json()
+    }, () => router.push('/login'))
+  },
   async delete (url, id, router) {
     return JWTGuardDecorator(async function (getAccessToken, clearTokens) {
       const res = await fetch(`${url}${id}/`, {

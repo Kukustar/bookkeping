@@ -1,25 +1,25 @@
 <template>
 
-    <div class="new-purchase-button-container" >
-      <v-card elevation="1" v-if="isAddNewPurchase">
-      <div class="new-purchase-input-container" >
+    <div class="new-transaction-button-container" >
+      <v-card elevation="1" v-if="isAddNewTransaction">
+      <div class="new-transaction-input-container" >
         <div class="input-wrapper">
-          <material-input type="number" label="cost ₽" :updater="updateCost"/>
+          <material-input :input-mode="'numeric'" type="number" label="cost ₽" :updater="updateAmount"/>
         </div>
         <div class="input-wrapper">
-          <material-input type="text" label="title" :updater="updateTitle"/>
+          <material-input :input-mode="'verbatim'" type="text" label="title" :updater="updateTitle"/>
         </div>
-        <div class="add-purchase">
+        <div class="add-transaction">
           <v-btn
             :style="{color: '#ffffff'}"
-            @click="addNewPurchase"
+            @click="addNewTransaction"
             :color="componentColor.get('primary-color')"
           >add
           </v-btn>
           <v-btn
             :color="componentColor.get('warning-color')"
             :style="{color: '#ffffff'}"
-            @click="isAddNewPurchase = !isAddNewPurchase">
+            @click="isAddNewTransaction = !isAddNewTransaction">
             cancel
           </v-btn>
         </div>
@@ -29,7 +29,7 @@
         <v-btn
           :style="{color: '#ffffff'}"
           :color="componentColor.get('primary-color')"
-          @click="isAddNewPurchase= !isAddNewPurchase"
+          @click="isAddNewTransaction= !isAddNewTransaction"
         >
           add
         </v-btn>
@@ -43,39 +43,39 @@ import { inject } from 'vue'
 import MaterialInput from '../material-input'
 
 export default {
-  name: 'new-purchase',
+  name: 'new-transaction',
   components: {
     MaterialInput
   },
   setup () {
     return {
-      addNew: inject('add-new-purchase'),
       componentColor: inject('component-colors')
+    }
+  },
+  props: {
+    addNew: {
+      type: Function,
+      required: true
     }
   },
   data () {
     return {
-      isAddNewPurchase: false,
-      cost: '',
+      isAddNewTransaction: false,
+      amount: '',
       title: ''
     }
   },
   methods: {
-    updateCost (e) {
-      this.cost = e.target.value
+    updateAmount (e) {
+      this.amount = e.target.value
     },
     updateTitle (e) {
       this.title = e.target.value
     },
-    addNewPurchase () {
-      this.isAddNewPurchase = false
-      this.addNew({
-        title: this.title,
-        cost: this.cost,
-        date: new Date(),
-        description: ''
-      })
-      this.cost = ''
+    addNewTransaction () {
+      this.isAddNewTransaction = false
+      this.addNew(this.title, this.amount, new Date())
+      this.amount = ''
       this.title = ''
     }
   }
@@ -83,17 +83,17 @@ export default {
 </script>
 
 <style>
-.new-purchase-button-container {
+.new-transaction-button-container {
   padding-top: 5px;
   display: flex;
   justify-content: space-around;
 }
 
-.new-purchase-button-container div {
+.new-transaction-button-container div {
   margin-bottom: 20px;
 }
 
-.new-purchase-button-container .add-purchase {
+.new-transaction-button-container .add-transaction {
   display: flex;
   justify-content: space-evenly;
   align-content: space-between;
@@ -102,14 +102,14 @@ export default {
 
 }
 
-.new-purchase-input-container {
+.new-transaction-input-container {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center
 }
 
-.new-purchase-input-container input {
+.new-transaction-input-container input {
   height: 40px;
   text-align: center;
 }
