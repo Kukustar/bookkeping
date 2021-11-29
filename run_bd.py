@@ -5,8 +5,8 @@ cursor = conn.cursor()
 
 
 def insert_into_table():
-    with open("file.sql") as files:
-        for line in files:
+    with open("file.sql") as file:
+        for line in file:
             print(line)
             cursor.execute(line)
     conn.commit()
