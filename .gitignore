@@ -1,3 +1,7 @@
 /.idea/
 *.sqlite3
 *.sqlite3_dump
+/app/app/__pycache__/
+app/purchases/__pycache__/
+app/purchases/migrations/__pycache__/
+ngrok.log

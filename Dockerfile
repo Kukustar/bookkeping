@@ -19,8 +19,11 @@ RUN apk del .tmp-build-deps
 RUN mkdir /app
 WORKDIR /app
 COPY app /app
+RUN chmod 777 /app/db.sqlite3
 
 # [Security] Limit the scope of user who run the docker image
 RUN adduser -D user
+RUN chown -R user:user /app
+
 
 USER user
