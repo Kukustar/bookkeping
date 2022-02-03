@@ -1,6 +1,7 @@
 from django.db.models import Sum
 from django.db import models
 from datetime import datetime, timedelta
+from calendar import monthrange
 
 class PurchaseType(models.Model):
     title = models.CharField(max_length=200)
@@ -34,6 +35,15 @@ class Purchase(Transaction):
         amount_today = Purchase.objects.filter(date__range=(day_start, day_end)).aggregate(Sum('amount'))
 
         return amount_today
+
+    # TODO this func is more for balance model 
+    @staticmethod
+    def get_available_for_day_balance():
+        [_, days_in_month] = monthrange(datetime.now().year, datetime.now().month)
+        days_before_month_end = days_in_month - datetime.now().day
+        total_balance = Balance.objects.get(id=1)
+
+        return round(total_balance.mount / days_before_month_end, 1)
 
 
 class Deposit(Transaction):

@@ -54,3 +54,14 @@ class StatisticViewSet(APIView):
             'last-day': last_day['amount__sum'],
             'today': today['amount__sum']
         })
+
+
+class DayBalanceViewSet(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, response):
+        availabe_for_day = Purchase.get_available_for_day_balance()
+
+        return Response({
+            'availabe_for_day': availabe_for_day
+        })

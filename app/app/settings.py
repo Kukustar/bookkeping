@@ -83,7 +83,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'app.wsgi.application'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8081",
+    "http://localhost:50377",
 ]
 
 # CORS_ALLOW_ALL_ORIGINS=True
