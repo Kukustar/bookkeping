@@ -16,6 +16,10 @@ class PurchasesSerializer(serializers.HyperlinkedModelSerializer):
         model = Purchase
         fields = ['date', 'amount', 'title', 'description', 'id', 'type_id', 'type']
 
+    def validate(self, data):
+        print(data)
+        return data
+
     def create(self, validated_data):
         total_balance = Balance.objects.get(id=1)
         total_balance.reduce_the_balance(validated_data["amount"])

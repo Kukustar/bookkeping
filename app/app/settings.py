@@ -25,12 +25,6 @@ SECRET_KEY = 'django-insecure-!u7aeny2fzkonkyn(m3zdk9$cx&qacyb^(buenflv_2+!&s_%k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    # '7d31e0242127.ngrok.io'
-    'localhost'
-]
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -82,8 +76,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
+ALLOWED_HOSTS = [
+    # '7d31e0242127.ngrok.io'
+    'localhost',
+    '192.168.1.104'
+]
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8081",
+    'http://192.168.1.104:8080'
 ]
 
 # CORS_ALLOW_ALL_ORIGINS=True

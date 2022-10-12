@@ -1,10 +1,11 @@
-INSERT INTO purchases_purchase (date, type_id, amount, title, description) VALUES ('27.12.2000', 1, 120, 'Sport', '')
-INSERT INTO purchases_purchase (date, type_id, amount, title, description) VALUES ('27.12.2000', 1, 120, 'Sport', '')
-INSERT INTO purchases_purchase (date, type_id, amount, title, description) VALUES ('27.12.2000', 1, 120, 'Sport', '')
-INSERT INTO purchases_purchase (date, type_id, amount, title, description) VALUES ('27.12.2000', 1, 120, 'Sport', '')
-INSERT INTO purchases_purchase (date, type_id, amount, title, description) VALUES ('27.12.2000', 1, 120, 'Sport', '')
-INSERT INTO purchases_purchase (date, type_id, amount, title, description) VALUES ('27.12.2000', 1, 120, 'Sport', '')
-INSERT INTO purchases_purchase (date, type_id, amount, title, description) VALUES ('27.12.2000', 1, 120, 'Sport', '')
-INSERT INTO purchases_purchase (date, type_id, amount, title, description) VALUES ('27.12.2000', 1, 120, 'Sport', '')
-INSERT INTO purchases_purchase (date, type_id, amount, title, description) VALUES ('27.12.2000', 1, 120, 'Sport', '')
-INSERT INTO purchases_purchase (date, type_id, amount, title, description) VALUES ('27.12.2000', 1, 120, 'Sport', '')
+INSERT INTO public.purchases_deposit (id, date, amount, title, description) VALUES (7, '2021-07-22 21:27:04.172000 +00:00', 400, 'Кэш бэк с Тинькова', '');
+INSERT INTO public.purchases_deposit (id, date, amount, title, description) VALUES (1, '2021-07-27 18:03:55.679000 +00:00', 424, 'Кэшбек тинькофф', '');
+INSERT INTO public.purchases_deposit (id, date, amount, title, description) VALUES (2, '2021-07-30 13:41:18.462000 +00:00', 160, 'Роберт за обед отдал', '');
+INSERT INTO public.purchases_deposit (id, date, amount, title, description) VALUES (3, '2021-07-30 14:05:55.854000 +00:00', 12620, 'Оф зп', '');
+INSERT INTO public.purchases_deposit (id, date, amount, title, description) VALUES (4, '2021-08-02 13:06:08.052000 +00:00', 51000, 'Зарплата ( минус кредит на машину)', '');
+INSERT INTO public.purchases_deposit (id, date, amount, title, description) VALUES (5, '2021-08-23 14:10:36.324000 +00:00', 90000, 'зарплата', '');
+INSERT INTO public.purchases_deposit (id, date, amount, title, description) VALUES (6, '2021-08-23 14:38:48.628000 +00:00', 700, 'шумаков за суши', '');
+INSERT INTO public.purchases_deposit (id, date, amount, title, description) VALUES (8, '2021-08-31 09:17:39.093000 +00:00', 9620, 'Оф зп', '');
+INSERT INTO public.purchases_deposit (id, date, amount, title, description) VALUES (9, '2021-08-31 10:37:14.062000 +00:00', 50000, 'Зп минус кредит', '');
+INSERT INTO public.purchases_deposit (id, date, amount, title, description) VALUES (10, '2021-08-31 19:34:05.912000 +00:00', 4020.75, 'Заначка', '');
+INSERT INTO public.purchases_deposit (id, date, amount, title, description) VALUES (11, '2021-09-11 12:05:13.857000 +00:00', 100, 'Настя вернула за кофе', '');

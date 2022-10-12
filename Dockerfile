@@ -4,9 +4,6 @@ ENV PYTHONUNBUFFERED 1
 
 COPY ./requirements.txt /requirements.txt
 
-# Install postgres client
-RUN apk add --update --no-cache postgresql-client
-
 # Install individual dependencies
 # so that we could avoid installing extra packages to the container
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
@@ -24,6 +21,5 @@ RUN chmod 777 /app/db.sqlite3
 # [Security] Limit the scope of user who run the docker image
 RUN adduser -D user
 RUN chown -R user:user /app
-
 
 USER user
