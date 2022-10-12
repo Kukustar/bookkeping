@@ -45,3 +45,6 @@
 ```sqlite3 db.sqlite3``` Enter sqlite shell
 ```.tables``` Looking for db tables
 ```cp db.sqlite3 db.sqlite_dump``` Creating copied db for backend
+
+# linux 
+```find . -type f  -exec du -h {} + | sort -r -h > /tmp/files.txt``` search big files
