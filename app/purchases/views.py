@@ -47,10 +47,6 @@ class StatisticViewSet(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, response):
-        last_day = Purchase.get_last_day_purchase_sum()
-        today = Purchase.get_today_purchase_sum()
+        data = Purchase.get_month_purchase_total(response.GET.get('start'), response.GET.get('end'))
 
-        return Response({
-            'last-day': last_day['amount__sum'],
-            'today': today['amount__sum']
-        })
+        return Response({'data': data})

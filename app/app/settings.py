@@ -79,6 +79,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 ALLOWED_HOSTS = [
     # '7d31e0242127.ngrok.io'
     'localhost',
+    '127.0.0.1',
     '192.168.1.104'
 ]
 

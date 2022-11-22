@@ -1,6 +1,7 @@
 from django.db.models import Sum
 from django.db import models
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+import calendar
 
 class PurchaseType(models.Model):
     title = models.CharField(max_length=200)
@@ -17,7 +18,7 @@ class Transaction(models.Model):
 
 class Purchase(Transaction):
     date = models.DateTimeField('purchase date time')
-    type = models.ForeignKey(PurchaseType, default=1, on_delete=models.PROTECT)
+    type = models.ForeignKey(PurchaseType, default=1, on_delete=models.PROTECT, related_name = 'purchase')
 
     @staticmethod
     def get_last_day_purchase_sum():
@@ -34,6 +35,22 @@ class Purchase(Transaction):
         amount_today = Purchase.objects.filter(date__range=(day_start, day_end)).aggregate(Sum('amount'))
 
         return amount_today
+
+    @staticmethod
+    def get_month_purchase_total(start, end):
+        # TODO start, end если не пустые то надо проверить что их можно привести к дате 
+        if start is None or end is None:
+            _, num_days = calendar.monthrange(datetime.today().year, datetime.today().month)
+            month_start_query = date(datetime.today().year, datetime.today().month, 1)
+            month_end_query = date(datetime.today().year, datetime.today().month, num_days)
+        else:
+            month_start_query = datetime.strptime(start, '%d-%m-%Y')
+            month_end_query = datetime.strptime(end, '%d-%m-%Y')
+
+        purchase_date_total = PurchaseType.objects.filter(purchase__date__range=(month_start_query, month_end_query))\
+            .annotate(general_sum = Sum('purchase__amount')).values('general_sum', 'title')
+
+        return purchase_date_total
 
 
 class Deposit(Transaction):

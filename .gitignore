@@ -5,3 +5,4 @@
 app/purchases/__pycache__/
 app/purchases/migrations/__pycache__/
 ngrok.log
+/virtual

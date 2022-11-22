@@ -48,3 +48,10 @@
 
 # linux 
 ```find . -type f  -exec du -h {} + | sort -r -h > /tmp/files.txt``` search big files
+
+# rysnc
+```rsync -avz <username>@<ip>:/<path-to-file-remote-server> /<path-to-local-file/folder> ```
+
+# venv
+```python3 -m venv virtual```
+```source virtual/bin/activate```
