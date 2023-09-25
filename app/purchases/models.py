@@ -18,6 +18,7 @@ class Transaction(models.Model):
 
 class Purchase(Transaction):
     date = models.DateTimeField('purchase date time')
+    card = models.TextField(default='')
     type = models.ForeignKey(PurchaseType, default=1, on_delete=models.PROTECT, related_name = 'purchase')
 
     @staticmethod

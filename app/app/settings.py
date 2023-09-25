@@ -9,8 +9,8 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-import os
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!u7aeny2fzkonkyn(m3zdk9$cx&qacyb^(buenflv_2+!&s_%k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Application definition
 
@@ -56,6 +56,7 @@ ROOT_URLCONF = 'app.urls'
 
 SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7)
 }
 
 TEMPLATES = [
@@ -77,16 +78,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'app.wsgi.application'
 
 ALLOWED_HOSTS = [
-    # '7d31e0242127.ngrok.io'
-    'localhost',
-    '127.0.0.1',
-    '192.168.1.104'
+    '10.0.2.2'
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8081",
-    'http://192.168.1.104:8080'
-]
+CORS_ALLOWED_ORIGINS = []
 
 # CORS_ALLOW_ALL_ORIGINS=True
 
