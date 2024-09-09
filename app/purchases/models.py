@@ -8,6 +8,9 @@ class PurchaseType(models.Model):
     code = models.CharField(max_length=200)
     description = models.CharField(blank=True, max_length=200)
 
+    def __str__(self) -> str:
+        return self.title
+
 class Transaction(models.Model):
     amount = models.FloatField(default=0.0)
     title = models.CharField(max_length=200)
@@ -20,6 +23,9 @@ class Purchase(Transaction):
     date = models.DateTimeField('purchase date time')
     card = models.TextField(default='')
     type = models.ForeignKey(PurchaseType, default=1, on_delete=models.PROTECT, related_name = 'purchase')
+
+    def __str__(self) -> str:
+        return self.title
 
     @staticmethod
     def get_last_day_purchase_sum():

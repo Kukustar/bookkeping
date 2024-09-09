@@ -5,12 +5,8 @@ from .models import Purchase, PurchaseType
 
 @admin.register(Purchase)
 class PurchaseAdmin(admin.ModelAdmin):
-    list_display = ["view_date", "view_amount", "title", "view_type"]
+    list_display = ["view_date", "view_amount", "title", "type"]
     list_filter = ["date"]
-
-    @admin.display()
-    def view_type(self, obj):
-        return obj.type.title
 
     @admin.display()
     def view_date(self, obj):
