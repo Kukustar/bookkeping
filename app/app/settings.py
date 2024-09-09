@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!u7aeny2fzkonkyn(m3zdk9$cx&qacyb^(buenflv_2+!&s_%k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Application definition
 
@@ -78,7 +78,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'app.wsgi.application'
 
 ALLOWED_HOSTS = [
-    '10.0.2.2'
+    '10.0.2.2',
+    '0.0.0.0'
 ]
 
 CORS_ALLOWED_ORIGINS = []
